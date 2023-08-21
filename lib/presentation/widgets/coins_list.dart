@@ -7,7 +7,7 @@ class CoinsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      
+      itemExtent: 50,
       itemCount: 10,
       itemBuilder: (context, index) {
       return const CoinsListItem();

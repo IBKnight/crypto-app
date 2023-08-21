@@ -1,3 +1,4 @@
+import 'package:crypto_app/presentation/widgets/mini_chart.dart';
 import 'package:flutter/material.dart';
 
 class CoinsListItem extends StatelessWidget {
@@ -5,7 +6,7 @@ class CoinsListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
         CircleAvatar(
           backgroundColor: Colors.grey,
@@ -16,7 +17,7 @@ class CoinsListItem extends StatelessWidget {
             Text('Name'),
           ],
         ),
-
+        MiniChart(),
       ],
     );
   }
