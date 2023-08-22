@@ -1,4 +1,4 @@
-import 'package:crypto_app/presentation/pages/home_page.dart';
+import 'package:crypto_app/common/router.dart';
 import 'package:flutter/material.dart';
 
 class CryptoApp extends StatelessWidget {
@@ -6,13 +6,11 @@ class CryptoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: AppRouter.router,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
+      theme: ThemeData.dark(useMaterial3: true),
+      //home: const HomePage(),
     );
   }
 }

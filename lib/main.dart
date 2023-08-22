@@ -1,10 +1,12 @@
 import 'dart:convert';
-
+import 'package:crypto_app/data/datasources/remote/remote_datasource.dart';
 import 'package:crypto_app/presentation/pages/crypto_app.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
-void main() async {
+void main() {
+
+
 
   runApp(const CryptoApp());
 

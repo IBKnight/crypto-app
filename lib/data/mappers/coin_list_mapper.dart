@@ -3,7 +3,7 @@ import 'package:crypto_app/data/models/coin_list/coin_list_model.dart';
 import 'package:crypto_app/domain/entities/coin_list/coin_list_entity.dart';
 import 'package:crypto_app/domain/entities/coin_list/coin_list_info_entity.dart';
 
-class Mapper {
+class CoinsListMapper {
   static CoinListEntity toEntity(CoinListModel model) {
     return CoinListEntity(
       fullName: model.fullName,

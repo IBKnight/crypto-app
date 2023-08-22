@@ -1,7 +1,7 @@
 class CoinListInfoEntity {
   final String toSymbol;
   final double price;
-  final String change;
+  final double change;
 
   CoinListInfoEntity({
     required this.toSymbol,

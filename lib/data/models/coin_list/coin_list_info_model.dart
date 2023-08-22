@@ -13,7 +13,7 @@ class CoinListInfoModel {
   final double price;
 
   @JsonKey(name: 'CHANGEPCT24HOUR')
-  final String change;
+  final double change;
 
   CoinListInfoModel(
       {required this.toSymbol,
