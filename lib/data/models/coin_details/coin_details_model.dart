@@ -11,10 +11,10 @@ class CoinDetailsModel with _$CoinDetailsModel {
     @JsonKey(name: 'high') required double price,
     @JsonKey(
       name: 'time',
-      toJson: _dateTimeToJson,
-      fromJson: _dateTimeFromJson,
+      // toJson: _dateTimeToJson,
+      // fromJson: _dateTimeFromJson,
     )
-    required DateTime dateTime,
+    required int dateTime,
   }) = _CoinDetailsModel;
 
   factory CoinDetailsModel.fromJson(Map<String, dynamic> json) =>
@@ -22,7 +22,7 @@ class CoinDetailsModel with _$CoinDetailsModel {
 
 
 }
-int _dateTimeToJson(DateTime time) => time.millisecondsSinceEpoch;
-
-DateTime _dateTimeFromJson(int milliseconds) =>
-DateTime.fromMicrosecondsSinceEpoch(milliseconds);
+// int _dateTimeToJson(DateTime time) => time.millisecondsSinceEpoch;
+//
+// DateTime _dateTimeFromJson(int milliseconds) =>
+// DateTime.fromMicrosecondsSinceEpoch(milliseconds);

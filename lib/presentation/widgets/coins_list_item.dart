@@ -14,7 +14,7 @@ class CoinsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('/details'),
+      onTap: () => context.push('/details', extra: coin),
       child: Row(
         children: [
           CircleAvatar(

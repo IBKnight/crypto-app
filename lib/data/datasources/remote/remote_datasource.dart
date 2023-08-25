@@ -32,7 +32,7 @@ class RemoteDataSource {
 
     final String fromSymbol = coinName;
 
-    final int limit = 8 * dayCount;
+    final int limit = 25 * dayCount;
     const String apiKey =
         '32dc6a1c7548897db4ce8bcc532500c0e0bb678ce4d60fcbaba7ff99d6f795ef';
     const String baseEndpoint =
