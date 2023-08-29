@@ -1,4 +1,5 @@
 import 'package:crypto_app/data/datasources/remote/remote_datasource.dart';
+import 'package:crypto_app/data/datasources/remote/websocket_handler.dart';
 import 'package:crypto_app/data/mappers/coin_detail_mapper.dart';
 import 'package:crypto_app/data/mappers/coin_list_mapper.dart';
 import 'package:crypto_app/data/models/coin_details/coin_details_model.dart';
@@ -33,6 +34,19 @@ class CoinsListRepoImpl implements CoinsListRepo {
     }).toList();
 
     return detailsEntity;
+
+  }
+
+  @override
+  Stream<CoinDetailsEntity> getCoinDetailListWS(String coinName, int dayCount) {
+    final webSocket = WebSocketHandler();
+
+    webSocket.connect();
+    webSocket.addSubscribe('24~CCCAGG~$coinName~USD~m');
+
+    Stream<CoinDetailsEntity> streamEntity = webSocket.convertStream(webSocket.detailsStream);
+
+    return streamEntity;
 
   }
 }

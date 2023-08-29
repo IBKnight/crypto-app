@@ -5,11 +5,14 @@ sealed class CoinDetailsState {}
 
 class CoinDetailsLoading extends CoinDetailsState {}
 
-class CoinDetailsLoaded extends CoinDetailsState {
-  List<CoinDetailsEntity> coinsList;
+class CoinDetailsLoadedWS extends CoinDetailsState {
+  Stream<CoinDetailsEntity> coinsStream;
 
-  CoinDetailsLoaded(this.coinsList);
+  CoinDetailsLoadedWS(this.coinsStream);
+
+
 }
+
 class CoinDetailsError extends CoinDetailsState {
   final String message;
 

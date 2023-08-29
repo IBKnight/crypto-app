@@ -8,9 +8,9 @@ part 'coin_details_model.g.dart';
 class CoinDetailsModel with _$CoinDetailsModel {
   @JsonSerializable(explicitToJson: true)
   factory CoinDetailsModel({
-    @JsonKey(name: 'high') required double price,
+    @JsonKey(name: 'CLOSE') required double price,
     @JsonKey(
-      name: 'time',
+      name: 'TS',
       // toJson: _dateTimeToJson,
       // fromJson: _dateTimeFromJson,
     )
