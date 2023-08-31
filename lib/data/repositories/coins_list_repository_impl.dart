@@ -12,6 +12,11 @@ import 'package:crypto_app/domain/repositories/coins_list_repository.dart';
 //TODO: переименовать в CoinsTrackerRepositoryImpl
 
 class CoinsListRepoImpl implements CoinsListRepo {
+  final WebSocketHandler webSocket = WebSocketHandler();
+
+
+
+
   @override
   Future<List<CoinListEntity>> getTopList() async {
     final List<CoinListModel> coinsModels =
@@ -39,14 +44,15 @@ class CoinsListRepoImpl implements CoinsListRepo {
 
   @override
   Stream<CoinDetailsEntity> getCoinDetailListWS(String coinName, int dayCount) {
-    final webSocket = WebSocketHandler();
 
     webSocket.connect();
-    webSocket.addSubscribe('24~CCCAGG~$coinName~USD~m');
+    webSocket.addSubscribe(coinName);
 
     Stream<CoinDetailsEntity> streamEntity = webSocket.convertStream(webSocket.detailsStream);
 
-    return streamEntity;
+    return (streamEntity);
 
   }
+
+
 }

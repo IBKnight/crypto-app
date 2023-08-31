@@ -12,19 +12,21 @@ class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
   final CoinsListRepo repository;
 
   CoinDetailsBloc({required this.repository}) : super(CoinDetailsLoading()) {
-    on<InitCoinDetails>(_initCoinWalletGraphWS);
-    // on<LoadCoinDetails>(_loadCoinWalletGraphWS);
+    on<LoadCoinDetails>(_loadCoinWalletGraphWS);
   }
 
-  Future<void> _initCoinWalletGraphWS(
-      InitCoinDetails event, Emitter<CoinDetailsState> emit) async {
+  Future<void> _loadCoinWalletGraphWS(
+      LoadCoinDetails event, Emitter<CoinDetailsState> emit) async {
     try {
       Stream<CoinDetailsEntity> stream =
           repository.getCoinDetailListWS(event.coinName, 1);
 
+      // stream.listen((event) {
+      //   print(event);
+      // });
 
-
-      emit(CoinDetailsLoadedWS(stream));
+      emit(CoinDetailsLoadedWS(stream.where((element) =>
+          element.dateTime != DateTime.fromMicrosecondsSinceEpoch(0))));
     } catch (e) {
       emit(CoinDetailsError(e.toString()));
     }

@@ -1,4 +1,4 @@
 abstract class ApiConfig{
-  static const String webSocketBase = 'wss://streamer.cryptocompare.com/v2';
+  static const String webSocketBase = 'wss://ws-feed.pro.coinbase.com';
 
 }

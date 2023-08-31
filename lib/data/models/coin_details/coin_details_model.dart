@@ -8,19 +8,12 @@ part 'coin_details_model.g.dart';
 class CoinDetailsModel with _$CoinDetailsModel {
   @JsonSerializable(explicitToJson: true)
   factory CoinDetailsModel({
-    @JsonKey(name: 'CLOSE') required double price,
-    @JsonKey(
-      name: 'TS',
-      // toJson: _dateTimeToJson,
-      // fromJson: _dateTimeFromJson,
-    )
-    required int dateTime,
+    @JsonKey(name: 'price') required String price,
+    @JsonKey(name: 'time') required DateTime dateTime,
   }) = _CoinDetailsModel;
 
   factory CoinDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$CoinDetailsModelFromJson(json);
-
-
 }
 // int _dateTimeToJson(DateTime time) => time.millisecondsSinceEpoch;
 //

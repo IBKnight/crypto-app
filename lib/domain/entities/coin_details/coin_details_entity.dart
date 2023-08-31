@@ -1,6 +1,6 @@
 class CoinDetailsEntity {
-  final double price;
-  final int dateTime;
+  final String price;
+  final DateTime dateTime;
 
   CoinDetailsEntity({
     required this.price,

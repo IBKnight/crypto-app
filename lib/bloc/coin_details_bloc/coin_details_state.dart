@@ -6,10 +6,12 @@ sealed class CoinDetailsState {}
 class CoinDetailsLoading extends CoinDetailsState {}
 
 class CoinDetailsLoadedWS extends CoinDetailsState {
-  Stream<CoinDetailsEntity> coinsStream;
+  final Stream<CoinDetailsEntity> coinsStream;
 
   CoinDetailsLoadedWS(this.coinsStream);
 
+  // final List<CoinDetailsEntity> coinsList;
+  // CoinDetailsLoadedWS(this.coinsList);
 
 }
 
