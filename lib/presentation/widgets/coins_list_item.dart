@@ -41,12 +41,12 @@ class CoinsListItem extends StatelessWidget {
               Text(
                   '${coin.coinInfo.price.toStringAsFixed(2)} ${coin.coinInfo.toSymbol}'),
               Text(
-                (coin.coinInfo.change > 0)
+                (coin.coinInfo.change >= 0)
                     ? '+${coin.coinInfo.change.toStringAsFixed(2)}%'
                     : '${coin.coinInfo.change.toStringAsFixed(2)}%',
                 style: TextStyle(
                     color:
-                        (coin.coinInfo.change > 0) ? Palette.green : Palette.red),
+                        (coin.coinInfo.change >= 0) ? Palette.green : Palette.red),
               ),
             ],
           )

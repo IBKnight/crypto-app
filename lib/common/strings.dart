@@ -6,5 +6,6 @@ abstract class Strings{
   static const String day = 'd';
   static const String week = 'w';
   static const String fiveDay = 'All time';
+  static const String price = 'Price:';
 
 }
