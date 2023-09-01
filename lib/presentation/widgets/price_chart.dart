@@ -11,8 +11,8 @@ class PriceChartView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final times = list.map((coin) => coin.dateTime).toList();
-    final prices = list.map((coin) => coin.price).toList();
+    final times = list.map((coin) => coin.dateTime.millisecondsSinceEpoch).toList();
+    final prices = list.map((coin) => double.parse(coin.price)).toList();
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -40,9 +40,7 @@ class PriceChartView extends StatelessWidget {
                 dotData: const FlDotData(show: false),
                 belowBarData: BarAreaData(show: false),
                 color: (((prices[prices.length - 1] - prices[0]) /
-                            prices[0] *
-                            100) >
-                        0)
+                            prices[0] * 100) >= 0)
                     ? Palette.green
                     : Palette.red,
               ),
