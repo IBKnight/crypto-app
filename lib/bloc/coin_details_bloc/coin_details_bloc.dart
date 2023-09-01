@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:crypto_app/data/datasources/remote/websocket_handler.dart';
 import 'package:crypto_app/domain/entities/coin_details/coin_details_entity.dart';
@@ -10,6 +12,7 @@ part 'coin_details_state.dart';
 
 class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
   final CoinsListRepo repository;
+  late final StreamSubscription<CoinDetailsEntity> sub;
 
   CoinDetailsBloc({required this.repository}) : super(CoinDetailsLoading()) {
     on<LoadCoinDetails>(_loadCoinWalletGraphWS);
@@ -21,12 +24,24 @@ class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
       Stream<CoinDetailsEntity> stream =
           repository.getCoinDetailListWS(event.coinName, 1);
 
-      // stream.listen((event) {
-      //   print(event);
-      // });
+      List<CoinDetailsEntity> list = [];
 
-      emit(CoinDetailsLoadedWS(stream.where((element) =>
-          element.dateTime != DateTime.fromMicrosecondsSinceEpoch(0))));
+      await emit.forEach(
+          stream.where((element) =>
+              element.dateTime != DateTime.fromMicrosecondsSinceEpoch(0)),
+          onData: (data) {
+        list.add(data);
+
+        final double minPrice = list.map((coin) => double.parse(coin.price)).toList().reduce((value, element) => value < element ? value : element);
+        final double maxPrice = list.map((coin) => double.parse(coin.price)).toList().reduce((value, element) => value > element ? value : element);
+        final double currentPrice = double.parse(list[list.length - 1].price);
+
+        return CoinDetailsLoadedWS(list, minPrice, maxPrice, currentPrice);
+      });
+
+
+
+      // emit(CoinDetailsLoadedWS(stream));
     } catch (e) {
       emit(CoinDetailsError(e.toString()));
     }
@@ -35,6 +50,9 @@ class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
   @override
   Future<void> close() async {
     WebSocketHandler.close();
+
+    // sub.cancel();
+
     super.close();
   }
 }

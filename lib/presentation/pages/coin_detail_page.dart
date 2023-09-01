@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:crypto_app/bloc/coin_details_bloc/coin_details_bloc.dart';
-import 'package:crypto_app/common/strings.dart';
 import 'package:crypto_app/common/theme.dart';
 import 'package:crypto_app/data/repositories/coins_list_repository_impl.dart';
 import 'package:crypto_app/domain/entities/coin_details/coin_details_entity.dart';
@@ -35,15 +34,13 @@ class DetailPageView extends StatefulWidget {
 
   final CoinListEntity coin;
 
-
-
   @override
   State<DetailPageView> createState() => _DetailPageViewState();
 }
 
 class _DetailPageViewState extends State<DetailPageView> {
   late final StreamSubscription<CoinDetailsEntity> sub;
-  List<CoinDetailsEntity> coinsList = [];
+  // List<CoinDetailsEntity> coinsList = [];
 
   @override
   void dispose() {
@@ -64,44 +61,32 @@ class _DetailPageViewState extends State<DetailPageView> {
                 child: CircularProgressIndicator(),
               ),
             CoinDetailsLoadedWS _ =>
-                // SizedBox(),
-                StreamBuilder<CoinDetailsEntity>(
-                stream: state.coinsStream,
-                builder: (context, snapshot) {
-                  print(snapshot.data);
-                  if (snapshot.data != null) {
-                    coinsList.add(snapshot.data as CoinDetailsEntity);
-                  }
-                  if (coinsList.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Text(
+                      '${state.currentPrice}\$',
+                      style: AppTheme.detailsTitleStyle,
+                    ),
+                    PriceChartView(list: state.coinsList),
+                    const SizedBox(height: 16),
+                    Row(
                       children: [
                         Text(
-                          '${coinsList[coinsList.length - 1].price}\$',
+                          'Min. price:\n ${state.minPrice}',
                           style: AppTheme.detailsTitleStyle,
                         ),
-                        PriceChartView(list: coinsList),
-                        const SizedBox(height: 16),
-                        Row(
-                          children: [
-                            Text(
-                              'Min. price:\n ${coinsList.map((coin) => double.parse(coin.price)).toList().reduce((value, element) => value < element ? value : element)}',
-                              style: AppTheme.detailsTitleStyle,
-                            ),
-                            const Expanded(child: SizedBox()),
-                            Text(
-                              'Max price:\n ${coinsList.map((coin) => double.parse(coin.price)).toList().reduce((value, element) => value > element ? value : element)}',
-                              style: AppTheme.detailsTitleStyle,
-                            )
-                          ],
-                        ),
+                        const Expanded(child: SizedBox()),
+                        Text(
+                          'Max price:\n ${state.maxPrice}',
+                          style: AppTheme.detailsTitleStyle,
+                        )
                       ],
                     ),
-                  );
-                }),
+                  ],
+                ),
+              ),
             CoinDetailsError _ => Center(child: Text(state.message)),
           };
         },

@@ -15,7 +15,3 @@ class CoinDetailsModel with _$CoinDetailsModel {
   factory CoinDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$CoinDetailsModelFromJson(json);
 }
-// int _dateTimeToJson(DateTime time) => time.millisecondsSinceEpoch;
-//
-// DateTime _dateTimeFromJson(int milliseconds) =>
-// DateTime.fromMicrosecondsSinceEpoch(milliseconds);
