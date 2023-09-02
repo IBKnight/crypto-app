@@ -11,7 +11,7 @@ part 'coin_details_event.dart';
 part 'coin_details_state.dart';
 
 class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
-  final CoinsListRepo repository;
+  final ICoinsListRepo repository;
   late final StreamSubscription<CoinDetailsEntity> sub;
 
   CoinDetailsBloc({required this.repository}) : super(CoinDetailsLoading()) {
