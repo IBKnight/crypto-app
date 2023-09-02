@@ -7,7 +7,7 @@ class RemoteDataSource {
 
   static Future<List<CoinListModel>> getCoinsTopList() async {
     final response = await dio.get(
-        'https://min-api.cryptocompare.com/data/top/totalvolfull?limit=7&tsym=USD');
+        'https://min-api.cryptocompare.com/data/top/totalvolfull?limit=25&tsym=USD');
 
     var coinsList = <CoinListModel>[];
 
@@ -19,6 +19,7 @@ class RemoteDataSource {
           name: coin['CoinInfo']['Name'],
           imageUrl: coin['CoinInfo']['ImageUrl'],
           rawData: CoinListInfoModel.fromJson(coin['RAW']['USD'])));
+
     }
 
     return coinsList;

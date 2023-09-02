@@ -1,10 +1,16 @@
 import 'dart:convert';
+import 'dart:async';
 
 import 'package:crypto_app/common/api_config.dart';
+import 'package:crypto_app/data/mappers/coin_list_mapper.dart';
 import 'package:crypto_app/data/models/coin_details/coin_details_model.dart';
+import 'package:crypto_app/data/models/coin_list/coin_list_info_model.dart';
+import 'package:crypto_app/data/models/coin_list/coin_list_model.dart';
+import 'package:crypto_app/data/models/coin_list/ws/coin_list_upd.dart';
 import 'package:crypto_app/domain/entities/coin_details/coin_details_entity.dart';
+import 'package:crypto_app/domain/entities/coin_list/coin_list_entity.dart';
+import 'package:crypto_app/domain/entities/coin_list/coin_list_info_entity.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/io.dart';
 
 class WebSocketHandler {
   static late WebSocketChannel channel;
@@ -17,18 +23,53 @@ class WebSocketHandler {
         if (data['type'] == 'ticker') {
           return CoinDetailsModel.fromJson(data);
         }
-        return CoinDetailsModel(price: '0', dateTime: DateTime.fromMicrosecondsSinceEpoch(0));
+        return CoinDetailsModel(
+            price: '0', dateTime: DateTime.fromMicrosecondsSinceEpoch(0));
       });
 
-  //
-  // Stream<CoinDetailsModel> get getCoinsListStream =>
-  //     channel.stream.map<CoinDetailsModel>((value) {
-  //       var data = jsonDecode(value);
-  //       if (data['TYPE'] == '2') {
-  //         return CoinDetailsModel.fromJson(data);
-  //       }
-  //       return CoinDetailsModel(price: 0, dateTime: 0);
-  //     });
+  Stream<List<CoinListEntity>> getCoinListStream(
+      List<CoinListModel> coins)  {
+    final coinList = coins.map((coinModel) {
+      return CoinsListMapper.toEntity(coinModel);
+    }).toList();
+
+
+    final coinListController = StreamController<List<CoinListEntity>>();
+
+    for (var coin in coins) {
+      addSubscribe(coin.name);
+    }
+
+    channel.stream.listen((event) {
+
+      var data = jsonDecode(event);
+
+      if (data['type'] == 'ticker') {
+        var updatedCoinInfo = CoinListInfoUpdModel.fromJson(data);
+
+        var index =
+            coinList.indexWhere((coin) => ('${coin.name}-USD') == data['product_id']);
+
+
+        if (index != -1) {
+          var oldCoin = coinList[index];
+          coinList[index] = CoinListEntity(
+              fullName: oldCoin.fullName,
+              name: oldCoin.name,
+              imageUrl: oldCoin.imageUrl,
+              coinInfo: CoinListInfoEntity(
+                price: double.parse(updatedCoinInfo.price),
+                change: (double.parse(updatedCoinInfo.price) - double.parse(updatedCoinInfo.change)) / double.parse(updatedCoinInfo.change) * 100
+              ));
+
+          coinListController.add(coinList);
+        }
+      }
+    });
+
+    return coinListController.stream;
+
+  }
 
   Stream<CoinDetailsEntity> convertStream(
       Stream<CoinDetailsModel> input) async* {
@@ -40,14 +81,22 @@ class WebSocketHandler {
     }
   }
 
+  Stream<CoinListInfoEntity> convertListStream(
+      Stream<CoinListInfoModel> input) async* {
+    await for (var model in input) {
+      yield CoinListInfoEntity(
+        price: model.price,
+        change: model.change,
+      );
+    }
+  }
 
   void connect() {
     if (!isWebSocketConnected) {
-      channel =
-          WebSocketChannel.connect(Uri.parse(ApiConfig.webSocketBase));
+      channel = WebSocketChannel.connect(Uri.parse(ApiConfig.webSocketBase));
       isWebSocketConnected = true;
     }
-
+    //
     // channel.stream.listen((event) {
     //   var data = jsonDecode(event);
     //   print(data.toString());
