@@ -5,9 +5,14 @@ sealed class CoinsListState {}
 
 class CoinsListLoading extends CoinsListState {}
 class CoinsListLoaded extends CoinsListState {
-  List<CoinListEntity> coinsList;
 
-  CoinsListLoaded(this.coinsList);
+  Stream<List<CoinListEntity>> stream;
+
+  // List<CoinListEntity> coinsList;
+
+  // CoinsListLoaded(this.coinsList);
+
+  CoinsListLoaded(this.stream);
 }
 class CoinsListError extends CoinsListState {
   final String message;

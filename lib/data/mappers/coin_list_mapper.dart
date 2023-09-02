@@ -10,7 +10,6 @@ class CoinsListMapper {
       name: model.name,
       imageUrl: model.imageUrl,
       coinInfo: CoinListInfoEntity(
-        toSymbol: model.rawData.toSymbol,
         price: model.rawData.price,
         change: model.rawData.change,
       ),
@@ -23,7 +22,6 @@ class CoinsListMapper {
       name: entity.name,
       imageUrl: entity.imageUrl,
       rawData: CoinListInfoModel(
-        toSymbol: entity.coinInfo.toSymbol,
         price: entity.coinInfo.price,
         change: entity.coinInfo.change,
       ),
