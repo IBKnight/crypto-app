@@ -37,10 +37,10 @@ Cryptocurrency Flutter application that displays the price of crypto coins in re
 
 ## Screenshots
 
-##### **List of the most popular coins in 24 hours**
-![App Screenshot](https://github.com/IBKnight/crypto-app/blob/master/assets/coins_list.png)
+#### **List of the most popular coins in 24 hours**
+<img src="https://github.com/IBKnight/crypto-app/blob/master/assets/coins_list.png" height="480" alt="App Screenshot">
 
 
-##### **Coin details page**
-###### This page contains a price chart that starts from the current moment, the current price, the percentage of price change, as well as the maximum and minimum prices.
-![App Screenshot](https://github.com/IBKnight/crypto-app/blob/master/assets/coin_price_chart.png)
+#### **Coin details page**
+##### This page contains a price chart that starts from the current moment, the current price, the percentage of price change, as well as the maximum and minimum prices.
+<img src="https://github.com/IBKnight/crypto-app/blob/master/assets/coin_price_chart.png" height="480" alt="App Screenshot">
