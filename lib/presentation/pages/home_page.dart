@@ -1,6 +1,7 @@
 import 'package:crypto_app/common/palette.dart';
 import 'package:crypto_app/presentation/widgets/coins_top_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -12,9 +13,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Palette.backgroundGrey,
       appBar: AppBar(
+        toolbarHeight: 65.h,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Home Page"),
-        centerTitle: true,
+        title: const Text("Market"),
       ),
       body: const Center(
         child: CoinsTopList())

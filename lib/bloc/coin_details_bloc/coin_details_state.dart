@@ -6,17 +6,14 @@ sealed class CoinDetailsState {}
 class CoinDetailsLoading extends CoinDetailsState {}
 
 class CoinDetailsLoadedWS extends CoinDetailsState {
-  // final Stream<CoinDetailsEntity> coinsStream;
-  //
-  // CoinDetailsLoadedWS(this.coinsStream);
-
   final List<CoinDetailsEntity> coinsList;
   final double minPrice;
   final double maxPrice;
   final double currentPrice;
+  final double changePct;
 
-  CoinDetailsLoadedWS(this.coinsList, this.minPrice, this.maxPrice, this.currentPrice);
-
+  CoinDetailsLoadedWS(this.coinsList, this.minPrice, this.maxPrice,
+      this.currentPrice, this.changePct);
 }
 
 class CoinDetailsError extends CoinDetailsState {

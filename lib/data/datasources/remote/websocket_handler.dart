@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:crypto_app/common/api_config.dart';
 import 'package:crypto_app/data/mappers/coin_list_mapper.dart';
 import 'package:crypto_app/data/models/coin_details/coin_details_model.dart';
-import 'package:crypto_app/data/models/coin_list/coin_list_info_model.dart';
 import 'package:crypto_app/data/models/coin_list/coin_list_model.dart';
 import 'package:crypto_app/data/models/coin_list/ws/coin_list_upd.dart';
 import 'package:crypto_app/domain/entities/coin_details/coin_details_entity.dart';
@@ -13,9 +12,14 @@ import 'package:crypto_app/domain/entities/coin_list/coin_list_info_entity.dart'
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class WebSocketHandler {
-  static late WebSocketChannel channel;
+  // static late WebSocketChannel channel;
+  WebSocketChannel channel;
+
   Set<String> activeSubscriptions = {};
   bool isWebSocketConnected = false;
+
+  WebSocketHandler()
+      : channel = WebSocketChannel.connect(Uri.parse(ApiConfig.webSocketBase));
 
   Stream<CoinDetailsModel> get detailsStream =>
       channel.stream.asyncMap<CoinDetailsModel>((value) {
@@ -27,12 +31,10 @@ class WebSocketHandler {
             price: '0', dateTime: DateTime.fromMicrosecondsSinceEpoch(0));
       });
 
-  Stream<List<CoinListEntity>> getCoinListStream(
-      List<CoinListModel> coins)  {
+  Stream<List<CoinListEntity>> getCoinListStream(List<CoinListModel> coins) {
     final coinList = coins.map((coinModel) {
       return CoinsListMapper.toEntity(coinModel);
     }).toList();
-
 
     final coinListController = StreamController<List<CoinListEntity>>();
 
@@ -41,26 +43,27 @@ class WebSocketHandler {
     }
 
     channel.stream.listen((event) {
-
       var data = jsonDecode(event);
 
       if (data['type'] == 'ticker') {
         var updatedCoinInfo = CoinListInfoUpdModel.fromJson(data);
 
-        var index =
-            coinList.indexWhere((coin) => ('${coin.name}-USD') == data['product_id']);
-
+        var index = coinList
+            .indexWhere((coin) => ('${coin.name}-USD') == data['product_id']);
 
         if (index != -1) {
           var oldCoin = coinList[index];
           coinList[index] = CoinListEntity(
-              fullName: oldCoin.fullName,
-              name: oldCoin.name,
-              imageUrl: oldCoin.imageUrl,
-              coinInfo: CoinListInfoEntity(
+            fullName: oldCoin.fullName,
+            name: oldCoin.name,
+            imageUrl: oldCoin.imageUrl,
+            coinInfo: CoinListInfoEntity(
                 price: double.parse(updatedCoinInfo.price),
-                change: (double.parse(updatedCoinInfo.price) - double.parse(updatedCoinInfo.change)) / double.parse(updatedCoinInfo.change) * 100
-              ));
+                change: (double.parse(updatedCoinInfo.price) -
+                        double.parse(updatedCoinInfo.change)) /
+                    double.parse(updatedCoinInfo.change) *
+                    100),
+          );
 
           coinListController.add(coinList);
         }
@@ -68,7 +71,6 @@ class WebSocketHandler {
     });
 
     return coinListController.stream;
-
   }
 
   Stream<CoinDetailsEntity> convertStream(
@@ -81,28 +83,12 @@ class WebSocketHandler {
     }
   }
 
-  Stream<CoinListInfoEntity> convertListStream(
-      Stream<CoinListInfoModel> input) async* {
-    await for (var model in input) {
-      yield CoinListInfoEntity(
-        price: model.price,
-        change: model.change,
-      );
-    }
-  }
-
   void connect() {
     if (!isWebSocketConnected) {
       channel = WebSocketChannel.connect(Uri.parse(ApiConfig.webSocketBase));
       isWebSocketConnected = true;
     }
-    //
-    // channel.stream.listen((event) {
-    //   var data = jsonDecode(event);
-    //   print(data.toString());
-    // }, onError: (error) {
-    //   print('Error: $error');
-    // });
+
   }
 
   void addSubscribe(String coinName) {
@@ -116,7 +102,7 @@ class WebSocketHandler {
 
   void deleteSubscribe(String coinName) {
     final sub =
-        '{"type": "subscribe", "product_ids": ["$coinName-USD"], "channels": ["ticker_batch"] }';
+        '{"type": "unsubscribe", "product_ids": ["$coinName-USD"], "channels": ["ticker_batch"] }';
     if (activeSubscriptions.contains(sub)) {
       channel.sink.add(sub);
       activeSubscriptions.add(sub);
@@ -124,7 +110,12 @@ class WebSocketHandler {
     print('$sub has been removed');
   }
 
-  static void close() {
+  // static void close() {
+  //   channel.sink.close();
+  //   print('channel was closed');
+  // }
+
+  void close() {
     channel.sink.close();
     print('channel was closed');
   }

@@ -10,7 +10,6 @@ class CoinsListRepoImpl implements ICoinsListRepo {
 
   @override
   Future<Stream<List<CoinListEntity>>> getTopList() async {
-    webSocket.connect();
     final List<CoinListModel> coinsModels =
         await RemoteDataSource.getCoinsTopList();
 
@@ -21,7 +20,6 @@ class CoinsListRepoImpl implements ICoinsListRepo {
 
   @override
   Stream<CoinDetailsEntity> getCoinDetailListWS(String coinName, int dayCount) {
-    webSocket.connect();
     webSocket.addSubscribe(coinName);
     Stream<CoinDetailsEntity> streamEntity =
         webSocket.convertStream(webSocket.detailsStream);
