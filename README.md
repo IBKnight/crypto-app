@@ -9,7 +9,7 @@ Cryptocurrency Flutter application that displays the price of cryptocoins in rea
 
 
 ###### Get Coin Top List 24H
-```http
+```sh
   GET https://min-api.cryptocompare.com/data/top/totalvolfull?limit=25&tsym=USD
 ```
 
