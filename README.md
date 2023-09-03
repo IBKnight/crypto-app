@@ -1,6 +1,6 @@
 # Crypto App
 
-Cryptocurrency Flutter application that displays the price of cryptocoins in real time, and also builds a price chart for analysis
+Cryptocurrency Flutter application that displays the price of crypto coins in real time, and also builds a price chart for analysis
 
 
 ## API References
@@ -38,9 +38,9 @@ Cryptocurrency Flutter application that displays the price of cryptocoins in rea
 ## Screenshots
 
 ##### **List of the most popular coins in 24 hours**
-![App Screenshot](\assets\coins_list.png)
+![App Screenshot](https://github.com/IBKnight/crypto-app/blob/master/assets/coins_list.png)
 
 
 ##### **Coin details page**
 ###### This page contains a price chart that starts from the current moment, the current price, the percentage of price change, as well as the maximum and minimum prices.
-![App Screenshot](\assets\coin_price_chart.png)
+![App Screenshot](https://github.com/IBKnight/crypto-app/blob/master/assets/coin_price_chart.png)
